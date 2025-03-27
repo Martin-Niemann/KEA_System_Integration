@@ -1,0 +1,146 @@
+{
+	"info": {
+		"_postman_id": "e6e14268-550b-43d2-a408-3f1483f11f22",
+		"name": "01a",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38992093"
+	},
+	"item": [
+		{
+			"name": "JSON",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Martin\",\n    \"occupation\": \"Student\",\n    \"studies\": {\n        \"name\": \"KEA Nørrebro\",\n        \"address\": \"Guldbergsgade 29N, 2200 København N\",\n        \"program\": \"Bachelor's Degree Programme in Software Development\"\n    },\n    \"hobbies\": [\n        \"FOSS\",\n        \"Linux\",\n        \"Music making\",\n        \"Self-hosting\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/parse",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"parse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "YAML",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/yaml",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "name: Martin\noccupation: Student\nstudies:\n    name: KEA Nørrebro\n    address: Guldbergsgade 29N, 2200 København N\n    program: Bachelor's Degree Programme in Software Development\nhobbies:\n    - FOSS\n    - Linux\n    - Music making\n    - Self-hosting\n",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/parse",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"parse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CSV",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/csv",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "name;occupation;place_of_study;address;program;hobbies\nMartin;Student;KEA Nørrebro;Guldbergsgade 29N, 2200 København N;Bachelor's Degree Programme in Software Development;FOSS,Linux,Music making,Self-hosting",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/parse",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"parse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Plain text",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[me]\nname: Martin\noccupation: Student\n\n[studies]\nname: KEA Nørrebro\naddress: Guldbergsgade 29N, 2200 København N\nprogram: Bachelor's Degree Programme in Software Development\n\n[hobbies]\nFOSS\nLinux\nMusic making\nSelf-hosting",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/parse",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"parse"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "localhost:5173",
+			"type": "default"
+		}
+	]
+}

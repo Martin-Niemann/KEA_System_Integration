@@ -1,0 +1,11 @@
+name: Martin
+occupation: Student
+studies:
+    name: KEA Nørrebro
+    address: Guldbergsgade 29N, 2200 København N
+    program: Bachelor's Degree Programme in Software Development
+hobbies:
+    - FOSS
+    - Linux
+    - Music making
+    - Self-hosting
