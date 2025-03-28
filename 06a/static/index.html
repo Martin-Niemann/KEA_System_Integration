@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatten</title>
+</head>
+
+<style>
+    #overlay {
+        position: fixed;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 2;
+    }
+
+    #usernameDialog {
+        position: absolute;
+        top: 30%;
+        left: 0%;
+    }
+
+    #messages {
+        list-style-type: none;
+    }
+</style>
+
+<body>
+    <div id="overlay">
+        <dialog id="usernameDialog" open>
+            <form id="usernameDialogForm">
+                <p>
+                    <label>
+                        Indtast dit navn yo:
+                        <input name="username" type="text">
+                    </label>
+                </p>
+                <div>
+                    <button type="submit">Ok så</button>
+                </div>
+            </form>
+        </dialog>
+    </div>
+
+    <h1>Chatten</h1>
+
+    <div id="main">
+        <div id="chat">
+            <ul id="messages">
+            </ul>
+        </div>
+        <div id="controls">
+            <form id="submitMessageForm">
+                <input type="text" name="message">
+                <button type="submit">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+<script>
+    let username = ""
+
+    let socket = new WebSocket("ws://localhost:8090/ws");
+
+    function getFormData(form) {
+        let formData = new FormData(form)
+        for (var pair of formData.entries()) {
+            return pair[1];
+        }
+    }
+
+    document.getElementById("usernameDialogForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        username = getFormData(event.target);
+
+        socket.send(`{"action": "join", "username": "${username}"}`);
+
+        document.getElementById("overlay").style.display = "none";
+    })
+
+    document.getElementById("submitMessageForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        message = getFormData(event.target);
+
+        socket.send(`{"action": "send_message", "message": "${message}", "username": "${username}"}`);
+
+        document.getElementById("submitMessageForm").reset();
+    })
+
+    addEventListener("beforeunload", (event) => {
+        if (username !== "") {
+            socket.send(`{"action": "leaving", "username": "${username}"}`);
+        }
+    });
+
+    socket.addEventListener("open", (event) => {
+        console.log("Connected to server.");
+    });
+
+    socket.addEventListener("message", (event) => {
+        console.log("Message from server ", event.data);
+        const data = JSON.parse(event.data);
+
+        switch (data.type) {
+            case "system_message":
+                addMessage(`🤖 ${data.message}`);
+                break;
+            case "user_message":
+                addMessage(`${data.username}: ${data.message}`);
+                break;
+        }
+    });
+
+    function addMessage(message) {
+        const date = new Date()
+        const message_with_time = `${date.getHours()}:${date.getMinutes()} ${message}`
+
+        const list = document.getElementById("messages")
+        const entry = document.createElement("li")
+        entry.appendChild(document.createTextNode(message_with_time))
+
+        list.appendChild(entry)
+    }
+</script>
+
+</html>
