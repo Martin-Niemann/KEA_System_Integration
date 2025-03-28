@@ -12,12 +12,3 @@ services:
       - 3306
     environment:
       MYSQL_ROOT_PASSWORD: itsroot
-
-  phpmyadmin:
-    image: docker.io/library/phpmyadmin:5.2.2
-    container_name: phpmyadmin
-    environment:
-        PMA_HOST: mysql
-        PMA_PORT: 3306
-    ports:
-        - 8080:80
