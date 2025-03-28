@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE</title>
+</head>
+
+<style>
+    #cpu {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #core {
+        display: flex;
+        flex-direction: row;
+        height: 100%;
+        gap: 10px;
+    }
+</style>
+
+<body>
+    <h1>SSE - Host CPU Load Percentage</h1>
+
+    <div id="cpu">
+        <div id="core">
+            <p>Core 1:</p>
+            <meter id="core1" value="0" min="0" max="100" low="50" high="80" optimum="30"></meter>
+            <p id="core1val">0%</p>
+        </div>
+        <div id="core">
+            <p>Core 2:</p>
+            <meter id="core2" value="0" min="0" max="100" low="50" high="80" optimum="30"></meter>
+            <p id="core2val">0%</p>
+        </div>
+        <div id="core">
+            <p>Core 3:</p>
+            <meter id="core3" value="0" min="0" max="100" low="50" high="80" optimum="30"></meter>
+            <p id="core3val">0%</p>
+        </div>
+        <div id="core">
+            <p>Core 4:</p>
+            <meter id="core4" value="0" min="0" max="100" low="50" high="80" optimum="30"></meter>
+            <p id="core4val">0%</p>
+        </div>
+    </div>
+
+    <script>
+        const core1 = document.getElementById("core1");
+        const core1val = document.getElementById("core1val");
+        const core2 = document.getElementById("core2");
+        const core2val = document.getElementById("core2val");
+        const core3 = document.getElementById("core3");
+        const core3val = document.getElementById("core3val");
+        const core4 = document.getElementById("core4");
+        const core4val = document.getElementById("core4val");
+
+        const eventSource = new EventSource("/events");
+        console.log(eventSource.url);
+
+        eventSource.onopen = () => {
+            console.log("Connection to server opened.");
+        };
+
+        eventSource.onerror = () => {
+            console.log("EventSource failed.");
+        };
+
+        addEventListener("beforeunload", (event) => {
+            eventSource.close()
+        });
+
+        eventSource.addEventListener("core1", (event) => {
+            core1.value = event.data;
+            core1val.textContent = event.data;
+        });
+        eventSource.addEventListener("core2", (event) => {
+            core2.value = event.data;
+            core2val.textContent = event.data;
+        });
+        eventSource.addEventListener("core3", (event) => {
+            core3.value = event.data;
+            core3val.textContent = event.data;
+        });
+        eventSource.addEventListener("core4", (event) => {
+            core4.value = event.data;
+            core4val.textContent = event.data;
+        });
+
+    </script>
+</body>
+
+</html>
