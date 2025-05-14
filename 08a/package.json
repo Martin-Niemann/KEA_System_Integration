@@ -1,0 +1,20 @@
+{
+  "name": "08a",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm exec tsc && pnpm exec node dist/main.js"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.13.11",
+    "tslib": "^2.8.1",
+    "typescript": "~5.7.2"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  },
+  "packageManager": "pnpm@10.10.0"
+}

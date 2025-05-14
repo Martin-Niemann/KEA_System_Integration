@@ -1,0 +1,33 @@
+# podman compose --file podman-compose.yml up --detach
+x-podman:
+  in_pod: false
+
+services:
+  backend-mysql:
+    image: docker.io/library/mysql:8.4.5
+    container_name: backend-mysql
+    hostname: backend-mysql
+    restart: 'unless-stopped'
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    ports:
+      - 33006:3306
+    environment:
+        MYSQL_ROOT_PASSWORD: root_password
+    healthcheck:
+       test: mysqladmin ping -h backend-mysql -u root --password=$$MYSQL_ROOT_PASSWORD
+       start_period: 5s
+       interval: 5s
+       timeout: 5s
+       retries: 10
+
+  backend-mongodb:
+    image: docker.io/mongodb/mongodb-community-server:latest
+    container_name: backend-mongodb
+    hostname: backend-mongodb
+    restart: 'unless-stopped'
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: root
+      MONGODB_INITDB_ROOT_PASSWORD: root

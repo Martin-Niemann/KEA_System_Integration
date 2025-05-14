@@ -1,0 +1,5 @@
+date=2025-05-10 22:05:03+0000
+os=Linux 6.14.5-zen1-1-zen
+schemaspy-version=7.0.2-SNAPSHOT
+schemaspy-revision=bf4d5fddd535dd213a512a6a521bcadb8260168d
+renderer=Graphviz dot 2.43.0 

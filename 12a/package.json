@@ -1,0 +1,20 @@
+{
+  "name": "08a",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm exec tsc && pnpm exec node dist/main.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "typescript": "~5.7.2"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.1",
+    "express": "^5.1.0",
+    "sqlite3": "^5.1.7",
+    "typeorm": "^0.3.23"
+  },
+  "packageManager": "pnpm@10.11.0"
+}

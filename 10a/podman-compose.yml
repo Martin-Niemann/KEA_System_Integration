@@ -1,0 +1,35 @@
+# podman compose --file podman-compose.yml up --detach
+x-podman:
+  in_pod: false
+
+services:
+  backend-mysql:
+    image: docker.io/library/mysql:8.4.5
+    container_name: backend-mysql
+    hostname: backend-mysql
+    restart: 'unless-stopped'
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    expose:
+      - 3306
+    environment:
+        MYSQL_ROOT_PASSWORD: root_password
+    healthcheck:
+       test: mysqladmin ping -h backend-mysql -u root --password=$$MYSQL_ROOT_PASSWORD
+       start_period: 5s
+       interval: 5s
+       timeout: 5s
+       retries: 10
+
+  schemaspy:
+    image: docker.io/schemaspy/schemaspy:snapshot
+    container_name: schemaspy
+    hostname: schemaspy
+    user: "1000:1000"
+    userns_mode: "keep-id:uid=1000,gid=1000"
+    depends_on:
+      backend-mysql:
+        condition: service_healthy
+    volumes:
+     - ./output:/output:rw
+     - ./schemaspy.properties:/schemaspy.properties:ro

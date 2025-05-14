@@ -1,0 +1,17 @@
+{
+  "name": "08a",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm exec tsc && pnpm exec node dist/main.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.11",
+    "typescript": "~5.7.2"
+  },
+  "dependencies": {
+    "typeorm": "^0.3.23"
+  },
+  "packageManager": "pnpm@10.10.0"
+}

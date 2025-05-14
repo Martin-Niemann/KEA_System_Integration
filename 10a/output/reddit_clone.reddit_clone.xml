@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="reddit_clone" schema="reddit_clone" type="MySQL - 8.4.5">
+   <tables>
+      <table catalog="reddit_clone" name="comments" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id_comment" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <child catalog="reddit_clone" column="parent_id" foreignKey="comments_parent" implied="false" onDeleteCascade="true" table="comments"/>
+            <child catalog="reddit_clone" column="id_comment" foreignKey="score_comment" implied="false" onDeleteCascade="true" table="scores"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="comment" nullable="false" remarks="" size="10000" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="is_toplevel" nullable="false" remarks="" size="1" type="BIT" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="id_post" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_post" foreignKey="comments_posts" implied="false" onDeleteCascade="true" table="posts"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="parent_id" nullable="true" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_comment" foreignKey="comments_parent" implied="false" onDeleteCascade="true" table="comments"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="id_user" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_user" foreignKey="comments_users" implied="false" onDeleteCascade="true" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="6" name="created_at" nullable="false" remarks="" size="19" type="DATETIME" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="7" name="updated_at" nullable="true" remarks="" size="19" type="DATETIME" typeCode="93"/>
+         <primaryKey column="id_comment" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id_comment"/>
+         </index>
+         <index name="id_comment_UNIQUE" unique="true">
+            <column ascending="true" name="id_comment"/>
+         </index>
+         <index name="parent_idx" unique="false">
+            <column ascending="true" name="parent_id"/>
+         </index>
+         <index name="posts_idx" unique="false">
+            <column ascending="true" name="id_post"/>
+         </index>
+         <index name="users_idx" unique="false">
+            <column ascending="true" name="id_user"/>
+         </index>
+      </table>
+      <table catalog="reddit_clone" name="posts" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id_post" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <child catalog="reddit_clone" column="id_post" foreignKey="comments_posts" implied="false" onDeleteCascade="true" table="comments"/>
+            <child catalog="reddit_clone" column="id_post" foreignKey="score_posts" implied="false" onDeleteCascade="true" table="scores"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="title" nullable="false" remarks="" size="300" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="link" nullable="true" remarks="" size="1000" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="text" nullable="true" remarks="" size="10000" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="id_subreddit" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_subreddit" foreignKey="posts_subreddits" implied="false" onDeleteCascade="true" table="subreddits"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="5" name="id_user" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_user" foreignKey="posts_users" implied="false" onDeleteCascade="true" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="6" name="created_at" nullable="false" remarks="" size="19" type="DATETIME" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="7" name="updated_at" nullable="true" remarks="" size="19" type="DATETIME" typeCode="93"/>
+         <primaryKey column="id_post" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id_post"/>
+         </index>
+         <index name="id_post_UNIQUE" unique="true">
+            <column ascending="true" name="id_post"/>
+         </index>
+         <index name="posts_fulltext" unique="false">
+            <column ascending="true" name="title"/>
+            <column ascending="true" name="link"/>
+            <column ascending="true" name="text"/>
+         </index>
+         <index name="posts_subreddits" unique="false">
+            <column ascending="true" name="id_subreddit"/>
+         </index>
+         <index name="users_idx" unique="false">
+            <column ascending="true" name="id_user"/>
+         </index>
+      </table>
+      <table catalog="reddit_clone" name="scores" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id_score" nullable="false" remarks="" size="10" type="INT" typeCode="4"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="score" nullable="false" remarks="" size="1" type="BIT" typeCode="-7"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="id_post" nullable="true" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_post" foreignKey="score_posts" implied="false" onDeleteCascade="true" table="posts"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="id_comment" nullable="true" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_comment" foreignKey="score_comment" implied="false" onDeleteCascade="true" table="comments"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="id_user" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_user" foreignKey="score_users" implied="false" onDeleteCascade="true" table="users"/>
+         </column>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="5" name="created_at" nullable="false" remarks="" size="19" type="DATETIME" typeCode="93"/>
+         <column autoUpdated="false" defaultValue="CURRENT_TIMESTAMP" digits="0" id="6" name="updated_at" nullable="true" remarks="" size="19" type="DATETIME" typeCode="93"/>
+         <primaryKey column="id_score" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id_score"/>
+         </index>
+         <index name="comments_idx" unique="false">
+            <column ascending="true" name="id_comment"/>
+         </index>
+         <index name="id_score_UNIQUE" unique="true">
+            <column ascending="true" name="id_score"/>
+         </index>
+         <index name="posts_idx" unique="false">
+            <column ascending="true" name="id_post"/>
+         </index>
+         <index name="users_idx" unique="false">
+            <column ascending="true" name="id_user"/>
+         </index>
+      </table>
+      <table catalog="reddit_clone" name="subreddits" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id_subreddit" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <child catalog="reddit_clone" column="id_subreddit" foreignKey="posts_subreddits" implied="false" onDeleteCascade="true" table="posts"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="url" nullable="false" remarks="" size="100" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="name" nullable="false" remarks="" size="100" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="description" nullable="true" remarks="" size="1000" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="4" name="id_user" nullable="true" remarks="" size="10" type="INT" typeCode="4">
+            <parent catalog="reddit_clone" column="id_user" foreignKey="subreddits_owner" implied="false" onDeleteCascade="false" table="users"/>
+         </column>
+         <primaryKey column="id_subreddit" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id_subreddit"/>
+         </index>
+         <index name="id_UNIQUE" unique="true">
+            <column ascending="true" name="id_subreddit"/>
+         </index>
+         <index name="name_UNIQUE" unique="true">
+            <column ascending="true" name="name"/>
+         </index>
+         <index name="subreddits_fulltext" unique="false">
+            <column ascending="true" name="url"/>
+            <column ascending="true" name="name"/>
+            <column ascending="true" name="description"/>
+         </index>
+         <index name="url_UNIQUE" unique="true">
+            <column ascending="true" name="url"/>
+         </index>
+         <index name="users_idx" unique="false">
+            <column ascending="true" name="id_user"/>
+         </index>
+      </table>
+      <table catalog="reddit_clone" name="users" numRows="0" remarks="" type="TABLE">
+         <column autoUpdated="true" defaultValue="null" digits="0" id="0" name="id_user" nullable="false" remarks="" size="10" type="INT" typeCode="4">
+            <child catalog="reddit_clone" column="id_user" foreignKey="comments_users" implied="false" onDeleteCascade="true" table="comments"/>
+            <child catalog="reddit_clone" column="id_user" foreignKey="posts_users" implied="false" onDeleteCascade="true" table="posts"/>
+            <child catalog="reddit_clone" column="id_user" foreignKey="score_users" implied="false" onDeleteCascade="true" table="scores"/>
+            <child catalog="reddit_clone" column="id_user" foreignKey="subreddits_owner" implied="false" onDeleteCascade="false" table="subreddits"/>
+         </column>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="1" name="user_name" nullable="false" remarks="" size="100" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="2" name="email" nullable="false" remarks="" size="320" type="VARCHAR" typeCode="12"/>
+         <column autoUpdated="false" defaultValue="null" digits="0" id="3" name="hashed_password" nullable="false" remarks="" size="60" type="VARCHAR" typeCode="12"/>
+         <primaryKey column="id_user" sequenceNumberInPK="1"/>
+         <index name="PRIMARY" unique="true">
+            <column ascending="true" name="id_user"/>
+         </index>
+         <index name="email_UNIQUE" unique="true">
+            <column ascending="true" name="email"/>
+         </index>
+         <index name="id_user_UNIQUE" unique="true">
+            <column ascending="true" name="id_user"/>
+         </index>
+         <index name="user_name_UNIQUE" unique="true">
+            <column ascending="true" name="user_name"/>
+         </index>
+      </table>
+   </tables>
+</database>
