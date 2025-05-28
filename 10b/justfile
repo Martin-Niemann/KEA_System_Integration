@@ -1,0 +1,11 @@
+# podman up
+up:
+  podman-compose --file docker-compose.yml up --detach
+
+# podman down
+down:
+  podman-compose down
+
+# pgloader migrate
+migrate:
+  pgloader my.load

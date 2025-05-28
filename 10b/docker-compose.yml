@@ -1,0 +1,47 @@
+services:
+  mysql:
+    image: docker.io/library/mysql:8.4.5
+    command: ["mysqld", "--mysql-native-password=ON"]
+    container_name: mysql
+    hostname: mysql
+    restart: 'unless-stopped'
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+      - ./my.cnf:/etc/my.cnf:ro
+    ports:
+      - 3306:3306
+    environment:
+        MYSQL_ROOT_PASSWORD: root_password
+    healthcheck:
+       test: mysqladmin ping -h backend-mysql -u root --password=$$MYSQL_ROOT_PASSWORD
+       start_period: 5s
+       interval: 5s
+       timeout: 5s
+       retries: 10
+
+  postgres:
+    image: docker.io/library/postgres:17.4
+    container_name: postgres
+    hostname: postgres
+    command: postgres -c shared_buffers=256MB -c max_connections=200 -c listen_addresses='*'
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=psql_user
+      - POSTGRES_PASSWORD=psql_password
+      - POSTGRES_DB=reddit_clone
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+
+  pgadmin:
+    image: docker.io/dpage/pgadmin4:9.1.0
+    container_name: pgadmin
+    ports:
+      - 8081:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=user@domain.com
+      - PGADMIN_DEFAULT_PASSWORD=SuperSecret
+      - PGADMIN_DISABLE_POSTFIX=true
+
+volumes:
+  postgres-data:

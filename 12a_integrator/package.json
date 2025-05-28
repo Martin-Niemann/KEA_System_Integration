@@ -1,0 +1,23 @@
+{
+  "name": "08a",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm exec tsc && pnpm exec node dist/main.js",
+    "script1": "pnpm exec tsc && pnpm exec node dist/script1.js",
+    "script2": "pnpm exec tsc && pnpm exec node dist/script2.js"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/express": "^5.0.2",
+    "axios": "^1.9.0",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0"
+  },
+  "packageManager": "pnpm@10.11.0"
+}

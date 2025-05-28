@@ -1,0 +1,15 @@
+LOAD DATABASE
+    FROM mysql://root:root_password@localhost:3306/reddit_clone
+    INTO postgresql://psql_user:psql_password@localhost:5432/reddit_clone
+
+WITH include drop, create tables, create indexes, reset sequences,
+      workers = 8, concurrency = 1,
+      multiple readers per thread, rows per range = 50000
+
+ CAST type bigint when (= precision 20) to bigserial drop typemod,
+      type date drop not null drop default using zero-dates-to-null,
+      -- type tinyint to boolean using tinyint-to-boolean,
+      type year to integer
+
+BEFORE LOAD DO
+   $$ create schema if not exists reddit_clone; $$;
