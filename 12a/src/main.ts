@@ -1,33 +1,34 @@
 import express from 'express'
-import { handleRegister } from './handlers'
+import bodyParser from 'body-parser';
+import { handleNewToken, handleRegister, handleCallHooks, handleUnregister } from './handlers.js'
+import { HandleCallHooksOperation } from './enums.js'
+import { initDb } from './db.js'
 
 const app = express()
 const port = 8090
 
-app.get('/buy10000litersofmilk', (req, res) => {
-    res.send('Hello World!')
+initDb()
+
+app.use(bodyParser.json());
+
+app.post('/buy10000litersofmilk', (req, res) => {
+    handleCallHooks(req, res, HandleCallHooksOperation.Flow)
 })
 
-app.get('/ping', (req, res) => {
-    res.send('Hello World!')
+app.post('/ping', (req, res) => {
+    handleCallHooks(req, res, HandleCallHooksOperation.Ping)
 })
 
 app.post('/register', (req, res) => {
-    const payload = JSON.parse(req.body)
-    if ("event" in payload && "url" in payload) {
-        handleRegister(payload.event, payload.url, res)
-    }
+    handleRegister(req, res)
 })
 
 app.post('/unregister', (req, res) => {
-    const payload = JSON.parse(req.body)
-    if ("event" in payload && "url" in payload) {
-        handleRegister(payload.event, payload.url, res)
-    }
+    handleUnregister(req, res)
 })
 
-app.get('/newtoken', (req, res) => {
-
+app.get('/newtoken', (_, res) => {
+    handleNewToken(res)
 })
 
 app.listen(port, () => {
